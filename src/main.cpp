@@ -1,6 +1,8 @@
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
+#include <chrono>
+#include <thread>
 
 // Include GLEW
 #include <GL/glew.h>
@@ -11,12 +13,17 @@ GLFWwindow* window;
 
 // Include GLM
 #include <glm/glm.hpp>
-using namespace glm;
 
 #include "common/shader.cpp"
 
+#define WIDTH 1024
+#define HEIGHT 768
+
+float my_time;
+
 int main( void )
 {
+  my_time = 100;
 	// Initialise GLFW
 	if( !glfwInit() )
 	{
@@ -32,7 +39,7 @@ int main( void )
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Open a window and create its OpenGL context
-	window = glfwCreateWindow( 1024, 768, "Tutorial 02 - Red triangle", NULL, NULL);
+	window = glfwCreateWindow( WIDTH, HEIGHT, "Fractal", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window.\n" );
 		getchar();
@@ -63,10 +70,17 @@ int main( void )
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "simple.vert", "simple.frag" );
 
+  GLuint time_id = glGetUniformLocation(programID, "u_time");
+  GLuint width_id = glGetUniformLocation(programID, "u_width");
+  GLuint height_id = glGetUniformLocation(programID, "u_height");
+
 	static const GLfloat g_vertex_buffer_data[] = { 
 		-1.0f, -1.0f, 0.0f,
 		 1.0f, -1.0f, 0.0f,
-		 0.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f, 0.0f,
+		-1.0f, -1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f
 	};
 
 	GLuint vertexbuffer;
@@ -78,6 +92,10 @@ int main( void )
 
 		// Clear the screen
 		glClear( GL_COLOR_BUFFER_BIT );
+
+    glUniform1f(time_id, my_time);
+    glUniform1f(width_id, WIDTH);
+    glUniform1f(height_id, HEIGHT);
 
 		// Use our shader
 		glUseProgram(programID);
@@ -95,7 +113,7 @@ int main( void )
 		);
 
 		// Draw the triangle !
-		glDrawArrays(GL_TRIANGLES, 0, 3); // 3 indices starting at 0 -> 1 triangle
+		glDrawArrays(GL_TRIANGLES, 0, 6); // 3 indices starting at 0 -> 1 triangle
 
 		glDisableVertexAttribArray(0);
 
@@ -103,6 +121,8 @@ int main( void )
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    my_time *= 1.01f;
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 		   glfwWindowShouldClose(window) == 0 );
