@@ -1,9 +1,9 @@
 ### Setup
 
 ```
-brew install cmake glew glfw glm
+brew install cmake glfw glm
 ```
 
 ### building manually:
 
-`clang++ src/main.cpp -framework opengl -framework SDL2 -std=c++11 -o Test`
+`clang++ -std=c++11 -stdlib=libc++ -lglfw -framework OpenGL src/main.cpp -o Test`
