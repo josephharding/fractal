@@ -121,7 +121,7 @@ int main( void )
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(100));
     my_time *= 1.01f;
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

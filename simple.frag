@@ -9,7 +9,10 @@ out vec3 color;
 
 void main(void) {
 
+  // TODO - what does this do? how can we improve resolution?
 	int limit = 1000;
+
+  // different Misiurewicz Points we can zoom into
 	// some point on the side
 	float m_p_x = .407476;
 	float m_p_y = .234204;
@@ -18,6 +21,7 @@ void main(void) {
 	m_p_x = -2;
 	m_p_y = 0;
 
+  // point in the middle
 	m_p_x = -0.77568377;
 	m_p_y = 0.13646737;
 
