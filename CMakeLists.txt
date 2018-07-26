@@ -9,12 +9,6 @@ find_package(glfw3 3.2 REQUIRED)
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
 
-find_package(GLEW REQUIRED)
-if (GLEW_FOUND)
-  include_directories(${GLEW_INCLUDE_DIRS})
-  link_libraries(${GLEW_LIBRARIES})
-endif()
-
 set(SOURCE_FILES src/main.cpp)
 
 add_executable(fractal ${SOURCE_FILES})
